@@ -9,6 +9,11 @@ const CancelButton2 =
   ".puaseBX > div > div:nth-child(3) > div:nth-child(2) button";
 const YesButton2 =
   ".puaseBX > div > div:nth-child(3) > div:nth-child(3) button";
+const clearButton2 =
+  ".gotoBX > div > div:nth-child(3) > div:nth-child(1) button";
+const CancelButton3 =
+  ".gotoBX > div > div:nth-child(3) > div:nth-child(2) button";
+const YesButton3 = ".gotoBX > div > div:nth-child(3) > div:nth-child(3) button";
 
 //app variables
 let hidden_ = true;
@@ -22,6 +27,8 @@ let notselectedColor = "#fffffe";
 let puseTimerTime = 0;
 let puseTimerseted = 0;
 let setPressed = 0;
+let frwSpeed = 5;
+let systemFRW = 8;
 
 //functions
 const updatesVideoplaybackRate = (id) => {
@@ -33,6 +40,18 @@ const updatesVideoplaybackRate = (id) => {
 const titleVideoShowTimeF = (e) => {
   //play pause only
   commonCK = (ep) => {
+    qa_s(`.ul_ li a`).forEach((a) => {
+      if (a.attributes.href.value === `#${currentId}`) {
+        setTimeout(() => {
+          a.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+            inline: "nearest",
+          });
+        }, 100);
+      }
+    });
+
     if (ep === 1) {
       q_s(`a#a_${currentId}`).click();
 
@@ -95,6 +114,8 @@ const ckeckID_Time = (interval) => {
       if (selectedDOM !== null) {
         let currentTime_ = selectedDOM.currentTime;
         let duration_ = selectedDOM.duration;
+
+        currentID_TIME = currentTime_;
 
         //pause timer
         if (puseTimerseted === 1 && currentTime_ >= puseTimerTime) {
@@ -191,7 +212,11 @@ const do_hidden_false = () => {
   hidden_ = false;
 
   _css(q_s(".ulContainer"), "transform", "translateY(0%)");
-  _css(q_s(".Open_File_1"), "transform", "translateY(360%)");
+  _css(
+    q_s(".Open_File_1"),
+    "transform",
+    `translateY(${q_s(".ul_").clientHeight}px)`
+  );
 };
 
 const do_hidden_true = () => {
@@ -467,6 +492,106 @@ const EVhandlersARR = [
       q_s("#setTime2").value = "";
 
       q_s(CancelButton2).click();
+    },
+  },
+  {
+    q_s: q_s(".Open_File_4"),
+    ev: "click",
+    f_: () => {
+      _css(q_s(".gotoBX"), {
+        visibility: "visible",
+      });
+    },
+  },
+  {
+    q_s: q_s(CancelButton3),
+    ev: "click",
+    f_: () => {
+      _css(q_s(".gotoBX"), {
+        visibility: "hidden",
+      });
+    },
+  },
+  {
+    q_s: q_s(clearButton2),
+    ev: "click",
+    f_: () => {
+      q_s("#setTime3").value = "";
+      q_s("#setTime4").value = "";
+      q_s("#setTime5").value = "";
+
+      q_s(CancelButton3).click();
+    },
+  },
+  {
+    q_s: q_s(YesButton3),
+    ev: "click",
+    f_: () => {
+      if (
+        !isNaN(q_s("#setTime3").value) &&
+        !isNaN(q_s("#setTime4").value) &&
+        !isNaN(q_s("#setTime5").value)
+      ) {
+        let numVAL3 = Number(q_s("#setTime3").value);
+        let numVAL4 = Number(q_s("#setTime4").value);
+        let numVAL5 = Number(q_s("#setTime5").value);
+
+        if (numVAL3 >= 0 && numVAL4 >= 0 && numVAL5 >= 0) {
+          q_s(CancelButton3).click();
+
+          let hTOs = 60 * 60 * numVAL3;
+          let mTOs = 60 * numVAL4;
+          let totalS = Number(hTOs + mTOs + numVAL5);
+
+          q_s(`video#${currentId}`).currentTime = totalS;
+        }
+      }
+    },
+  },
+  {
+    q_s: window,
+    ev: "keyup",
+    f_: (e) => {
+      switch (e.key) {
+        case " ":
+          e.preventDefault();
+
+          if (currentId !== undefined) {
+            let vd = q_s(`video#${currentId}`);
+
+            if (!vd.paused) {
+              vd.play();
+            } else {
+              vd.pause();
+            }
+          }
+          break;
+
+        case "ArrowRight":
+          e.preventDefault();
+
+          if (currentId !== undefined) {
+            let initGoal = q_s(`video#${currentId}`).currentTime - systemFRW;
+            let goalTime = initGoal + frwSpeed;
+
+            q_s(`video#${currentId}`).currentTime = goalTime;
+          }
+          break;
+
+        case "ArrowLeft":
+          e.preventDefault();
+
+          if (currentId !== undefined) {
+            let initGoal = q_s(`video#${currentId}`).currentTime + systemFRW;
+            let goalTime = initGoal - frwSpeed;
+
+            q_s(`video#${currentId}`).currentTime = goalTime;
+          }
+          break;
+
+        default:
+          break;
+      }
     },
   },
 ];
