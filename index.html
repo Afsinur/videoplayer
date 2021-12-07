@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>video | home</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- plugins -->
+    <script src="js/selectors_.js"></script>
+    <script src="js/load_bar_plugin.js"></script>
+    <script src="js/dropVideo_intoPlayer_plugIn.js"></script>
+    <!-- app.js -->
+    <script src="js/app.js" defer></script>
+  </head>
+
+  <body>
+    <div class="comALRTbx alertBox_">
+      <div>
+        <div>
+          <h2>Are you sure?</h2>
+        </div>
+
+        <div>
+          <div><button>Cancel</button></div>
+          <div><button>Yes</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comALRTbx puaseBX">
+      <div>
+        <div>
+          <h2>Current video pause time</h2>
+        </div>
+
+        <div>
+          <label for="setTime">Last time:(h)</label>
+          <input type="number" id="setTime" min="0" />
+
+          <label for="setTime1">Last time:(m)</label>
+          <input type="number" id="setTime1" min="0" />
+
+          <label for="setTime2">Last time:(s)</label>
+          <input type="number" id="setTime2" min="0" />
+        </div>
+
+        <div>
+          <div><button>Clear</button></div>
+          <div><button>Cancel</button></div>
+          <div><button>Set</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="videoPlayerContainer">
+      <button class="comOpnFL Open_File">Open</button>
+
+      <button class="comOpnFL Open_File_1">Menu</button>
+
+      <button class="comOpnFL Open_File_2">Reset</button>
+
+      <button class="comOpnFL Open_File_3">Timer</button>
+
+      <div class="ulContainer">
+        <ul class="ul_"></ul>
+      </div>
+
+      <input type="file" id="video_file_" multiple />
+    </div>
+  </body>
+</html>

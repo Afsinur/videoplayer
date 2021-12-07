@@ -1,0 +1,229 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #888;
+}
+
+.videoPlayerContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ulContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  overflow-y: hidden;
+  background-color: rgba(100, 148, 237, 0.808);
+  transition: 150ms ease-in-out;
+  transition-property: transform;
+  transform: translateY(-100%);
+}
+
+.ul_ {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.ul_ li {
+  position: relative;
+  list-style: none;
+  width: 280px;
+  padding: 4px 8px;
+  margin: 20px;
+  flex-shrink: 0;
+}
+
+.ul_ li a {
+  transition: 500ms ease-in-out;
+  transition-property: color;
+  text-shadow: 0 1px 1px rgb(0, 0, 0, 0.5);
+  text-decoration: none;
+  color: #fffffe;
+  word-break: break-all;
+}
+
+.ul_ li span {
+  position: absolute;
+  top: -5px;
+  right: -20px;
+  padding: 8px 10px;
+  border-radius: 5px;
+  line-height: 10px;
+  background: rgba(255, 0, 0, 0.575);
+  color: #fffffe;
+  transition: 150ms ease-in-out;
+  transition-property: background;
+  cursor: pointer;
+}
+
+.ul_ li span:hover {
+  background: rgba(255, 0, 0, 0.89);
+}
+
+input#video_file_ {
+  display: none;
+}
+
+.Open_File {
+  bottom: 0;
+  right: 0;
+  transition-property: background-color;
+  z-index: 2;
+}
+
+.Open_File_1 {
+  top: 0;
+  right: 0;
+  transform: translateY(0%);
+  transition-property: background-color, transform;
+  z-index: 3;
+}
+
+.Open_File_2 {
+  bottom: 50px;
+  right: 0;
+  transition-property: background-color;
+  z-index: 3;
+}
+
+.Open_File_3 {
+  bottom: 100px;
+  right: 0;
+  transition-property: background-color;
+  z-index: 3;
+}
+
+.comOpnFL {
+  position: fixed;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(100, 148, 237, 0.808);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  transition: 150ms ease-in-out;
+  color: #fffffe;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.comOpnFL:hover {
+  background-color: rgba(26, 95, 223, 0.808);
+}
+
+.comALRTbx > div {
+  width: 290px;
+  background-color: #fffffe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.comALRTbx > div > div:nth-child(1) {
+  margin: 5px 0 10px 0;
+}
+
+.alertBox_ > div > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.comALRTbx button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  margin: 5px;
+  cursor: pointer;
+}
+
+.alertBox_ > div > div:nth-child(2) > div:nth-child(2) button {
+  background-color: rgba(226, 18, 18, 0.705);
+  color: rgb(248, 229, 229);
+  transition: 150ms ease-in-out;
+  transition-property: background-color, color;
+}
+
+.alertBox_ > div > div:nth-child(2) > div:nth-child(2) button:hover {
+  background-color: rgba(226, 18, 18, 0.876);
+  color: rgb(255, 255, 255);
+}
+
+.comALRTbx {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  visibility: hidden;
+}
+
+.puaseBX {
+  visibility: hidden;
+}
+
+.puaseBX > div > div:nth-child(2) label {
+  font-weight: 500;
+}
+
+.puaseBX > div > div:nth-child(2) input {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 4px;
+  box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.puaseBX > div > div:nth-child(3) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.puaseBX > div > div:nth-child(3) > div:nth-child(3) button {
+  background-color: rgba(11, 156, 42, 0.7);
+  color: rgb(248, 229, 229);
+  transition: 150ms ease-in-out;
+  transition-property: background-color, color;
+}
+
+.puaseBX > div > div:nth-child(3) > div:nth-child(3) button:hover {
+  background-color: rgba(11, 156, 42, 0.876);
+  color: rgb(255, 255, 255);
+}
+
+.playTimerCOLOR {
+  background-color: rgba(11, 156, 42, 0.876);
+}
+
+.pauseTimerCOLOR {
+  background-color: rgba(226, 18, 18, 0.876);
+}
+
+.userVideo {
+  height: 100vh;
+  margin: 10px;
+  z-index: 1;
+}
