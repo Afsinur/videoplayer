@@ -227,3 +227,11 @@ input#video_file_ {
   margin: 10px;
   z-index: 1;
 }
+
+@media screen and (max-width: 361px) {
+  .userVideo {
+    width: 100vw;
+    margin: 10px;
+    z-index: 1;
+  }
+}
