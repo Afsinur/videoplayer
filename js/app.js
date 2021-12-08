@@ -230,50 +230,70 @@ const commonFilePass = (i, sortASC) => {
   if (i < sortASC.length) {
     const file = sortASC[i];
 
-    if (file.type === "video/mp4" || file.type === "video/webm") {
+    if (
+      file.type === "audio/mp3" ||
+      file.type === "audio/mpeg" ||
+      file.type === "audio/wav" ||
+      file.type === "video/mp4" ||
+      file.type === "video/webm"
+    ) {
       let file_Reader = new FileReader();
 
       load_bar_plugin(q_s("html"), file_Reader);
 
       file_Reader.onload = (ev) => {
-        let video = create_("video");
-
-        s_attr(video, "controls", "");
-        video.src = URL.createObjectURL(
-          new Blob([new Uint8Array(ev.target.result)])
-        );
-
         let ID_ = `id_${Math.ceil(Math.random() * 10000)}`;
-        video.id = ID_;
 
-        a_class(video, "userVideo");
+        const commomF_ = () => {
+          let li = create_("li");
 
-        let li = create_("li");
+          let a = create_("a");
+          a.href = `#${ID_}`;
 
-        let a = create_("a");
-        a.href = `#${ID_}`;
+          a.innerHTML = file.name;
 
-        a.innerHTML = file.name;
+          let span = create_("span");
+          span.id = `${ID_}_`;
+          span.textContent = "x";
 
-        let span = create_("span");
-        span.id = `${ID_}_`;
-        span.textContent = "x";
+          append_(li, span);
+          append_(li, a);
+          append_(q_s(".ul_"), li);
 
-        append_(li, span);
-        append_(li, a);
-        append_(q_s(".ul_"), li);
+          a = create_("a");
+          a.href = `#${ID_}`;
+          a.id = `a_${ID_}`;
 
-        a = create_("a");
-        a.href = `#${ID_}`;
-        a.id = `a_${ID_}`;
+          append_(q_s("div.videoPlayerContainer"), a);
+        };
 
-        append_(q_s("div.videoPlayerContainer"), a);
-        append_(q_s("div.videoPlayerContainer"), video);
+        if (file.type === "video/mp4" || file.type === "video/webm") {
+          let video = create_("video");
 
-        let eventArr = ["play", "pause", "ratechange"];
-        eventArr.forEach((ev) => {
-          on_(q_s(`video#${ID_}`), ev, titleVideoShowTimeF);
-        });
+          s_attr(video, "controls", "");
+          video.src = URL.createObjectURL(
+            new Blob([new Uint8Array(ev.target.result)])
+          );
+
+          video.id = ID_;
+          s_attr(video, "tabindex", "-1");
+
+          a_class(video, "userVideo");
+          commomF_();
+
+          append_(q_s("div.videoPlayerContainer"), video);
+
+          let eventArr = ["play", "pause", "ratechange"];
+          eventArr.forEach((ev) => {
+            on_(q_s(`video#${ID_}`), ev, titleVideoShowTimeF);
+          });
+        } else if (
+          file.type === "audio/mp3" ||
+          file.type === "audio/mpeg" ||
+          file.type === "audio/wav"
+        ) {
+          console.log(2);
+        }
 
         do_hidden_false();
       };
@@ -286,7 +306,7 @@ const commonFilePass = (i, sortASC) => {
       file_Reader.readAsArrayBuffer(file);
     } else {
       alert(
-        `Sorry, can not play this type of file: ${file.type}\n [ only: video/mp4 or video/webm ]`
+        `Sorry, can not play this type of file: ${file.type}\n [ only: video/mp4, video/webm, audio/mp3, audio/mpeg, audio/wav]`
       );
     }
   }
@@ -552,21 +572,35 @@ const EVhandlersARR = [
     q_s: window,
     ev: "keyup",
     f_: (e) => {
+      const arClass = (spd) => {
+        let div = create_("div");
+        div.textContent = `${spd}x`;
+
+        a_class(div, "showPlayBKspeed");
+        a_class(div, "fadeoutAnim");
+
+        append_(q_s("body"), div);
+
+        on_(div, "animationend", () => {
+          div.remove();
+        });
+      };
+
+      const v_arClass = (spd) => {
+        let div = create_("div");
+        div.textContent = `${(spd * 100).toFixed(0)}%`;
+
+        a_class(div, "showPlayBKspeed");
+        a_class(div, "fadeoutAnim");
+
+        append_(q_s("body"), div);
+
+        on_(div, "animationend", () => {
+          div.remove();
+        });
+      };
+
       switch (e.key) {
-        case " ":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let vd = q_s(`video#${currentId}`);
-
-            if (!vd.paused) {
-              vd.play();
-            } else {
-              vd.pause();
-            }
-          }
-          break;
-
         case "ArrowRight":
           e.preventDefault();
 
@@ -587,6 +621,72 @@ const EVhandlersARR = [
 
             q_s(`video#${currentId}`).currentTime = goalTime;
           }
+          break;
+
+        case "Shift" && ">":
+          e.preventDefault();
+
+          if (currentId !== undefined) {
+            let vd = q_s(`video#${currentId}`);
+
+            if (vd.playbackRate < 2) {
+              vd.playbackRate += 0.25;
+
+              arClass(vd.playbackRate);
+            } else {
+              arClass(vd.playbackRate);
+            }
+          }
+
+          break;
+
+        case "Shift" && "<":
+          e.preventDefault();
+
+          if (currentId !== undefined) {
+            let vd = q_s(`video#${currentId}`);
+
+            if (vd.playbackRate > 0.25) {
+              vd.playbackRate -= 0.25;
+
+              arClass(vd.playbackRate);
+            } else {
+              arClass(vd.playbackRate);
+            }
+          }
+
+          break;
+
+        case "ArrowUp":
+          e.preventDefault();
+          if (currentId !== undefined) {
+            let vd = q_s(`video#${currentId}`);
+
+            v_arClass(vd.volume);
+          }
+
+          break;
+
+        case "ArrowDown":
+          e.preventDefault();
+          if (currentId !== undefined) {
+            let vd = q_s(`video#${currentId}`);
+
+            v_arClass(vd.volume);
+          }
+
+          break;
+
+        case "f":
+          e.preventDefault();
+          if (currentId !== undefined) {
+            let vd = q_s(`video#${currentId}`);
+
+            if (vd.requestFullscreen) {
+              vd.requestFullscreen();
+            }
+          }
+
           break;
 
         default:
