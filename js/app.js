@@ -242,9 +242,20 @@ const commonFilePass = (i, sortASC) => {
       load_bar_plugin(q_s("html"), file_Reader);
 
       file_Reader.onload = (ev) => {
-        let ID_ = `id_${Math.ceil(Math.random() * 10000)}`;
+        if (file.type === "video/mp4" || file.type === "video/webm") {
+          let ID_ = `id_${Math.ceil(Math.random() * 10000)}`;
+          let video = create_("video");
 
-        const commomF_ = () => {
+          s_attr(video, "controls", "");
+          video.src = URL.createObjectURL(
+            new Blob([new Uint8Array(ev.target.result)])
+          );
+
+          video.id = ID_;
+          s_attr(video, "tabindex", "-1");
+
+          a_class(video, "userVideo");
+
           let li = create_("li");
 
           let a = create_("a");
@@ -265,21 +276,6 @@ const commonFilePass = (i, sortASC) => {
           a.id = `a_${ID_}`;
 
           append_(q_s("div.videoPlayerContainer"), a);
-        };
-
-        if (file.type === "video/mp4" || file.type === "video/webm") {
-          let video = create_("video");
-
-          s_attr(video, "controls", "");
-          video.src = URL.createObjectURL(
-            new Blob([new Uint8Array(ev.target.result)])
-          );
-
-          video.id = ID_;
-          s_attr(video, "tabindex", "-1");
-
-          a_class(video, "userVideo");
-          commomF_();
 
           append_(q_s("div.videoPlayerContainer"), video);
 
