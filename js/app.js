@@ -29,8 +29,18 @@ let puseTimerseted = 0;
 let setPressed = 0;
 let frwSpeed = 5;
 let systemFRW = 8;
+let setTimeOutAfter = 5;
+let mouseOvered = 0;
 
 //functions
+const mouseoverTimeOut = () => {
+  setTimeout(() => {
+    if (mouseOvered === 0) {
+      do_hidden_true();
+    }
+  }, setTimeOutAfter * 1000);
+};
+
 const updatesVideoplaybackRate = (id) => {
   let c_DOM = q_s(`video#${id}`);
 
@@ -193,6 +203,8 @@ const do_hidden_false = () => {
 
   _css(q_s(".ulContainer"), "transform", "translateY(0%)");
   _css(q_s(".Open_File_1"), "transform", "translateY(360%)");
+
+  mouseoverTimeOut();
 };
 
 const do_hidden_true = () => {
@@ -651,6 +663,24 @@ const EVhandlersARR = [
 
         default:
           break;
+      }
+    },
+  },
+  {
+    q_s: window,
+    ev: "mousemove",
+    f_: (e) => {
+      let btnH =
+        q_s(".Open_File_1").offsetTop + q_s(".Open_File_1").clientHeight;
+
+      if (e.clientY <= q_s(".ul_").clientHeight + btnH) {
+        mouseOvered = 1;
+
+        do_hidden_false();
+      } else {
+        mouseOvered = 0;
+
+        do_hidden_true();
       }
     },
   },
