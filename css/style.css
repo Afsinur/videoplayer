@@ -236,8 +236,8 @@ input#video_file_ {
 }
 
 .userVideo {
+  position: relative;
   height: 100vh;
-  margin: 10px;
   z-index: 1;
 }
 
@@ -257,6 +257,95 @@ input#video_file_ {
 
 .fadeoutAnim {
   animation: fadeout 500ms linear 1 forwards;
+}
+
+.vdC_Container {
+  position: relative;
+  overflow-x: hidden;
+  transition: 150ms ease-in-out;
+  transition-property: visibility;
+}
+
+.videoPRGbar {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.692);
+  z-index: 2;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.in_videoPRGbar {
+  position: relative;
+  width: 100%;
+  background: rgb(228, 9, 9);
+  transform: translateX(-100%);
+  padding: 2px 0;
+  transition: 150ms ease-in-out;
+  transition-property: transform;
+}
+
+.on_videoPRGbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2px 0;
+}
+
+.on_videoPRGbar_absolute {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  visibility: hidden;
+  transition: 150ms ease-in-out;
+  transition-property: visibility;
+}
+
+.showTime_absolute {
+  position: absolute;
+  bottom: -35px;
+  left: 5px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.iconPlayPause {
+  padding: 15px 4px;
+  margin: 0 5px;
+  background: #fff;
+  position: relative;
+}
+
+.iconPlayPause2 {
+  margin: 0 0 0 20px;
+  border-left: 15px solid #fff;
+  border-top: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+
+.frwrdOneIcon {
+  border-left: 15px solid #fff;
+  border-top: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+
+.bkwrdOneIcon {
+  margin: 0 0 0 20px;
+  border-left: 15px solid #fff;
+  border-top: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid transparent;
 }
 
 @keyframes fadeout {

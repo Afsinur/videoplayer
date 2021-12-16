@@ -14,6 +14,13 @@ const clearButton2 =
 const CancelButton3 =
   ".gotoBX > div > div:nth-child(3) > div:nth-child(2) button";
 const YesButton3 = ".gotoBX > div > div:nth-child(3) > div:nth-child(3) button";
+const onlySuports = [
+  "video/mp4",
+  "video/webm",
+  "audio/mpeg",
+  "audio/wav",
+  "audio/mp3",
+];
 
 //app variables
 let hidden_ = true;
@@ -28,11 +35,111 @@ let puseTimerTime = 0;
 let puseTimerseted = 0;
 let setPressed = 0;
 let frwSpeed = 5;
-let systemFRW = 8;
 let setTimeOutAfter = 5;
 let mouseOvered = 0;
 
 //functions
+const getTimeConversions = (TIME_) => {
+  let covert_duration_ = Math.floor(TIME_) / 60;
+
+  let numberAfterDecimal = parseInt(
+    (covert_duration_ % 1).toFixed(2).substring(2)
+  );
+
+  let numberBeforeDecimal = parseInt(covert_duration_);
+  if (numberBeforeDecimal >= 60) {
+    let covert_duration__1 = numberBeforeDecimal / 60;
+
+    let numberAfterDecimal_1 = parseInt(
+      (covert_duration__1 % 1).toFixed(2).substring(2)
+    );
+
+    let numberAfterDecimalConvert__1 = (numberAfterDecimal_1 * 60) / 100;
+
+    numberBeforeDecimal = Math.round(numberAfterDecimalConvert__1);
+  }
+
+  let numberAfterDecimalConvert_ = Math.round((numberAfterDecimal * 60) / 100);
+
+  let HR_, MIN_, SEC_;
+  if (numberBeforeDecimal >= 10) {
+    MIN_ = `${numberBeforeDecimal}:`;
+  } else {
+    MIN_ = `0${numberBeforeDecimal}:`;
+  }
+
+  if (numberAfterDecimalConvert_ >= 10) {
+    SEC_ = `${numberAfterDecimalConvert_}`;
+  } else {
+    SEC_ = `0${numberAfterDecimalConvert_}`;
+  }
+
+  if (Math.floor(TIME_) < 3600) {
+    HR_ = ``;
+  } else {
+    let covert_duration_hr = Math.floor(TIME_) / 3600;
+    let numberBeforeDecimal_hr = parseInt(covert_duration_hr);
+    HR_ = `0${numberBeforeDecimal_hr}:`;
+  }
+
+  return `${HR_}${MIN_}${SEC_}`;
+};
+
+const pauseIconShow = () => {
+  let div = create_("div");
+  let div1 = create_("div");
+
+  a_class(div, "fd-x");
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+  a_class(div1, "iconPlayPause2");
+
+  append_(div, div1);
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
+const playIconShow = () => {
+  let div = create_("div");
+  let div1 = create_("div");
+  let div2 = create_("div");
+
+  a_class(div, "fd-x");
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+  a_class(div1, "iconPlayPause");
+  a_class(div2, "iconPlayPause");
+
+  append_(div, div1);
+  append_(div, div2);
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
+const getPercent = (x, y) => (y * 100) / x;
+
+const getNumToPercent = (x, y) => (x * y) / 100;
+
+const onlySuportsPrint = () => {
+  let str = "";
+
+  for (let i = 0; i < onlySuports.length; i++) {
+    const el = onlySuports[i];
+
+    str += ` ${el} `;
+  }
+
+  return str;
+};
+
 const mouseoverTimeOut = () => {
   setTimeout(() => {
     if (mouseOvered === 0) {
@@ -128,56 +235,7 @@ const ckeckID_Time = (interval) => {
           a_class(q_s(".Open_File_3"), "playTimerCOLOR");
         }
 
-        //let covert_currentTime_ = ;
-        const getTimeConversions = (TIME_) => {
-          let covert_duration_ = Math.floor(TIME_) / 60;
-
-          let numberAfterDecimal = parseInt(
-            (covert_duration_ % 1).toFixed(2).substring(2)
-          );
-
-          let numberBeforeDecimal = parseInt(covert_duration_);
-          if (numberBeforeDecimal >= 60) {
-            let covert_duration__1 = numberBeforeDecimal / 60;
-
-            let numberAfterDecimal_1 = parseInt(
-              (covert_duration__1 % 1).toFixed(2).substring(2)
-            );
-
-            let numberAfterDecimalConvert__1 =
-              (numberAfterDecimal_1 * 60) / 100;
-
-            numberBeforeDecimal = Math.round(numberAfterDecimalConvert__1);
-          }
-
-          let numberAfterDecimalConvert_ = Math.round(
-            (numberAfterDecimal * 60) / 100
-          );
-
-          let HR_, MIN_, SEC_;
-          if (numberBeforeDecimal >= 10) {
-            MIN_ = `${numberBeforeDecimal}:`;
-          } else {
-            MIN_ = `0${numberBeforeDecimal}:`;
-          }
-
-          if (numberAfterDecimalConvert_ >= 10) {
-            SEC_ = `${numberAfterDecimalConvert_}`;
-          } else {
-            SEC_ = `0${numberAfterDecimalConvert_}`;
-          }
-
-          if (Math.floor(TIME_) < 3600) {
-            HR_ = ``;
-          } else {
-            let covert_duration_hr = Math.floor(TIME_) / 3600;
-            let numberBeforeDecimal_hr = parseInt(covert_duration_hr);
-            HR_ = `0${numberBeforeDecimal_hr}:`;
-          }
-
-          return `${HR_}${MIN_}${SEC_}`;
-        };
-
+        //let covert_currentTime_
         let duration_related = getTimeConversions(duration_);
         let currentTime_related = getTimeConversions(currentTime_);
 
@@ -218,7 +276,13 @@ const commonFilePass = (i, sortASC) => {
   if (i < sortASC.length) {
     const file = sortASC[i];
 
-    if (file.type === "video/mp4" || file.type === "video/webm") {
+    if (
+      file.type === "video/mp4" ||
+      file.type === "video/webm" ||
+      file.type === "audio/mpeg" ||
+      file.type === "audio/wav" ||
+      file.type === "audio/mp3"
+    ) {
       let file_Reader = new FileReader();
 
       load_bar_plugin(q_s("html"), file_Reader);
@@ -226,7 +290,6 @@ const commonFilePass = (i, sortASC) => {
       file_Reader.onload = (ev) => {
         let video = create_("video");
 
-        s_attr(video, "controls", "");
         video.src = URL.createObjectURL(
           new Blob([new Uint8Array(ev.target.result)])
         );
@@ -235,6 +298,9 @@ const commonFilePass = (i, sortASC) => {
         video.id = ID_;
 
         a_class(video, "userVideo");
+        a_class(video, "fd-x");
+        a_class(video, "fx-x-c");
+        a_class(video, "fx-y-c");
 
         let li = create_("li");
 
@@ -256,7 +322,138 @@ const commonFilePass = (i, sortASC) => {
         a.id = `a_${ID_}`;
 
         append_(q_s("div.videoPlayerContainer"), a);
-        append_(q_s("div.videoPlayerContainer"), video);
+
+        let div_ = create_("div");
+        div_.id = `vdC_${ID_}`;
+        a_class(div_, "vdC_Container");
+
+        let div_1 = create_("div");
+        a_class(div_1, "videoPRGbar");
+
+        let div_2 = create_("div");
+        a_class(div_2, "in_videoPRGbar");
+
+        let div_3 = create_("div");
+        a_class(div_3, "on_videoPRGbar");
+
+        let div_4 = create_("div");
+        a_class(div_4, "on_videoPRGbar_absolute");
+
+        let div_5 = create_("div");
+        a_class(div_5, "showTime_absolute");
+
+        on_(div_3, "click", (e) => {
+          let d3_p = getPercent(div_3.clientWidth, e.offsetX);
+
+          let d3_nTp = getNumToPercent(video.duration, d3_p);
+
+          video.currentTime = d3_nTp;
+        });
+
+        on_(div_, "mousemove", () => {
+          _css(div_1, {
+            visibility: "visible",
+          });
+
+          _css(div_, {
+            cursor: "default",
+          });
+        });
+
+        on_(video, "click", () => {
+          if (video.paused) {
+            video.play();
+
+            playIconShow();
+          } else {
+            video.pause();
+
+            pauseIconShow();
+          }
+        });
+
+        const tmPrint = (e) => {
+          let d3_p = getPercent(div_3.clientWidth, e.offsetX);
+
+          let d3_nTp = getNumToPercent(video.duration, d3_p);
+
+          //d3_nTp
+          let total_tm_ = getTimeConversions(video.duration);
+          let c_tm_ = getTimeConversions(d3_nTp);
+
+          div_4.textContent = `${c_tm_} / ${total_tm_}`;
+
+          if (e.offsetX < div_3.clientWidth / 2) {
+            _css(div_4, {
+              left: `${e.offsetX}px`,
+            });
+          } else {
+            _css(div_4, {
+              left: `${e.offsetX - div_4.clientWidth}px`,
+            });
+          }
+        };
+
+        let stayVisible = 0;
+        on_(div_1, "mouseover", (e) => {
+          stayVisible = 1;
+
+          on_(div_1, "mousemove", tmPrint);
+
+          _css(div_4, {
+            visibility: "visible",
+          });
+        });
+        on_(div_1, "mouseleave", () => {
+          stayVisible = 0;
+
+          _css(div_4, {
+            visibility: "hidden",
+          });
+        });
+
+        //setInterVal
+        setInterval(() => {
+          let v_p = getPercent(video.duration, video.currentTime);
+
+          _css(div_2, {
+            transform: `translateX(-${100 - v_p}%)`,
+          });
+
+          let total_tm_ = getTimeConversions(video.duration);
+          let c_tm_ = getTimeConversions(video.currentTime);
+
+          div_5.textContent = `${c_tm_} / ${total_tm_}`;
+        }, 100);
+
+        setInterval(() => {
+          if (video.paused || stayVisible === 1) {
+            _css(div_1, {
+              visibility: "visible",
+            });
+
+            _css(div_, {
+              cursor: "default",
+            });
+          } else {
+            _css(div_1, {
+              visibility: "hidden",
+            });
+
+            _css(div_, {
+              cursor: "none",
+            });
+          }
+        }, 5000);
+
+        append_(div_1, div_2);
+        append_(div_1, div_3);
+        append_(div_1, div_4);
+        append_(div_1, div_5);
+        append_(div_, video);
+        append_(div_, div_1);
+
+        append_(q_s("div.videoPlayerContainer"), div_);
 
         let eventArr = ["play", "pause", "ratechange"];
         eventArr.forEach((ev) => {
@@ -274,7 +471,9 @@ const commonFilePass = (i, sortASC) => {
       file_Reader.readAsArrayBuffer(file);
     } else {
       alert(
-        `Sorry, can not play this type of file: ${file.type}\n [ only: video/mp4 or video/webm ]`
+        `Sorry, can not play this type of file: ${
+          file.type
+        }\n [ only: ${onlySuportsPrint()} ]`
       );
     }
   }
@@ -350,11 +549,15 @@ const EVhandlersARR = [
 
                   vd.play();
 
+                  playIconShow();
+
                   a.style["color"] = playColor;
                 } else if (!q_s(`video#${vd.id}`).paused) {
                   currentPlay = false;
 
                   vd.pause();
+
+                  pauseIconShow();
 
                   a.style["color"] = pauseColor;
                 }
@@ -371,7 +574,9 @@ const EVhandlersARR = [
       if (e.target.nodeName === "SPAN") {
         qa_s("video").forEach((vd) => {
           if (`${vd.id}_` === `${e.target.id}`) {
-            vd.remove();
+            vd.parentNode.remove();
+
+            q_s(`#a_${vd.id}`).remove();
           }
         });
 
@@ -572,27 +777,134 @@ const EVhandlersARR = [
         });
       };
 
+      const frwrdIconShow = (frwSpeed) => {
+        let div = create_("div");
+        let div1 = create_("div");
+        let div2 = create_("div");
+        let p = create_("p");
+
+        a_class(div, "fd-x");
+        a_class(div, "showPlayBKspeed");
+        a_class(div, "fadeoutAnim");
+        a_class(div1, "frwrdOneIcon");
+        a_class(div2, "frwrdOneIcon");
+
+        _css(div1, {
+          "margin-left": "20px",
+        });
+
+        p.textContent = `${frwSpeed}`;
+        _css(p, {
+          position: "absolute",
+          top: "-50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          padding: "5px 15px",
+          "text-align": "center",
+          background: "rgba(0,0,0,0.5)",
+          "border-radius": "50%",
+        });
+
+        append_(div, p);
+        append_(div, div1);
+        append_(div, div2);
+
+        append_(q_s("body"), div);
+
+        on_(div, "animationend", () => {
+          div.remove();
+        });
+      };
+
+      const bkwrdIconShow = (frwSpeed) => {
+        let div = create_("div");
+        let div1 = create_("div");
+        let div2 = create_("div");
+        let p = create_("p");
+
+        a_class(div, "fd-x");
+        a_class(div, "showPlayBKspeed");
+        a_class(div, "fadeoutAnim");
+        a_class(div1, "frwrdOneIcon");
+        a_class(div2, "frwrdOneIcon");
+
+        _css(div1, {
+          "margin-left": "20px",
+        });
+
+        p.textContent = `${frwSpeed}`;
+        _css(p, {
+          position: "absolute",
+          top: "150%",
+          left: "50%",
+          transform: "translate(-50%, -50%) rotate(180deg)",
+          padding: "5px 15px",
+          "text-align": "center",
+          background: "rgba(0,0,0,0.5)",
+          "border-radius": "50%",
+        });
+
+        append_(div, p);
+        append_(div, div1);
+        append_(div, div2);
+
+        _css(div, {
+          transform: "translate(-50%, -50%) rotate(180deg)",
+        });
+
+        append_(q_s("body"), div);
+
+        on_(div, "animationend", () => {
+          div.remove();
+        });
+      };
+
       switch (e.key) {
+        case " ":
+          e.preventDefault();
+
+          if (currentId !== undefined) {
+            let cVD = q_s(`video#${currentId}`);
+
+            if (cVD.paused) {
+              cVD.play();
+
+              playIconShow();
+            } else {
+              cVD.pause();
+
+              pauseIconShow();
+            }
+          }
+
+          break;
+
         case "ArrowRight":
           e.preventDefault();
 
           if (currentId !== undefined) {
-            let initGoal = q_s(`video#${currentId}`).currentTime - systemFRW;
+            let initGoal = q_s(`video#${currentId}`).currentTime;
             let goalTime = initGoal + frwSpeed;
 
             q_s(`video#${currentId}`).currentTime = goalTime;
+
+            frwrdIconShow(`${frwSpeed}s`);
           }
+
           break;
 
         case "ArrowLeft":
           e.preventDefault();
 
           if (currentId !== undefined) {
-            let initGoal = q_s(`video#${currentId}`).currentTime + systemFRW;
+            let initGoal = q_s(`video#${currentId}`).currentTime;
             let goalTime = initGoal - frwSpeed;
 
             q_s(`video#${currentId}`).currentTime = goalTime;
+
+            bkwrdIconShow(`${frwSpeed}s`);
           }
+
           break;
 
         case "Shift" && ">":
@@ -631,10 +943,15 @@ const EVhandlersARR = [
 
         case "ArrowUp":
           e.preventDefault();
+
           if (currentId !== undefined) {
             let vd = q_s(`video#${currentId}`);
 
-            v_arClass(vd.volume);
+            if (vd.volume < 1 && vd.volume >= 0) {
+              v_arClass((vd.volume += 0.1));
+            } else {
+              v_arClass(vd.volume);
+            }
           }
 
           break;
@@ -644,7 +961,11 @@ const EVhandlersARR = [
           if (currentId !== undefined) {
             let vd = q_s(`video#${currentId}`);
 
-            v_arClass(vd.volume);
+            if (vd.volume <= 1 && vd.volume > 0.1) {
+              v_arClass((vd.volume -= 0.1));
+            } else {
+              v_arClass(vd.volume);
+            }
           }
 
           break;
@@ -670,13 +991,16 @@ const EVhandlersARR = [
     q_s: window,
     ev: "mousemove",
     f_: (e) => {
+      let ln_ = qa_s(".ul_ li a").length;
       let btnH =
         q_s(".Open_File_1").offsetTop + q_s(".Open_File_1").clientHeight;
 
       if (e.clientY <= q_s(".ul_").clientHeight + btnH) {
-        mouseOvered = 1;
+        if (ln_ !== 0) {
+          mouseOvered = 1;
 
-        do_hidden_false();
+          do_hidden_false();
+        }
       } else {
         mouseOvered = 0;
 
