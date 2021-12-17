@@ -143,6 +143,7 @@ input#video_file_ {
   width: 65px;
   height: 265px;
   overflow-y: hidden;
+  z-index: 3;
 }
 
 .under_collapseBTNlist {
@@ -450,7 +451,15 @@ input#video_file_ {
 @media screen and (max-width: 361px) {
   .userVideo {
     width: 100vw;
-    margin: 10px;
     z-index: 1;
+  }
+
+  .shortCutShow div {
+    width: 100%;
+    font-size: medium;
+  }
+
+  .shortCutShow div ul {
+    padding: 8px 16px;
   }
 }

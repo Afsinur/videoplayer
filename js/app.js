@@ -414,7 +414,11 @@ const do_hidden_false = () => {
   hidden_ = false;
 
   _css(q_s(".ulContainer"), "transform", "translateY(0%)");
-  _css(q_s(".Open_File_1"), "transform", "translateY(360%)");
+  _css(
+    q_s(".Open_File_1"),
+    "transform",
+    `translateY(${q_s(".ul_").clientHeight}px)`
+  );
 
   mouseoverTimeOut();
 };
