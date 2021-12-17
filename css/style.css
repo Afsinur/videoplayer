@@ -82,10 +82,12 @@ input#video_file_ {
 }
 
 .Open_File {
+  position: relative !important;
   bottom: 0;
   right: 0;
   transition-property: background-color;
-  z-index: 2;
+  z-index: 3;
+  margin: 5px !important;
 }
 
 .Open_File_1 {
@@ -96,21 +98,62 @@ input#video_file_ {
 }
 
 .Open_File_2 {
-  bottom: 50px;
+  position: relative !important;
+  bottom: 0;
   right: 0;
   z-index: 3;
+  margin: 5px !important;
 }
 
 .Open_File_3 {
-  bottom: 100px;
+  position: relative !important;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+  margin: 5px !important;
+}
+
+.Open_File_4 {
+  position: relative !important;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+  margin: 5px !important;
+}
+
+.Open_File_5 {
+  bottom: 0;
   right: 0;
   z-index: 3;
 }
 
-.Open_File_4 {
-  bottom: 150px;
+.Open_File_5 div {
+  height: 5px;
+  width: 5px;
+  position: relative;
+  background: #fffffe;
+  border-radius: 50%;
+  margin: 2px;
+}
+
+.collapseBTNlist {
+  position: fixed;
+  bottom: 35px;
   right: 0;
-  z-index: 3;
+  width: 65px;
+  height: 265px;
+  overflow-y: hidden;
+}
+
+.under_collapseBTNlist {
+  transform: translate(0, -5px);
+  transition: 150ms ease-in-out;
+  transition-property: transform;
+}
+
+.under_collapseBTNlist button {
+  transition: 150ms ease-in-out;
+  transition-property: transform;
 }
 
 .comOpnFL {
@@ -118,17 +161,19 @@ input#video_file_ {
   margin: 10px;
   border: none;
   border-radius: 5px;
-  background-color: rgba(100, 148, 237, 0.808);
+  background-color: rgba(29, 104, 241, 0.808);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
   transition: 150ms ease-in-out;
   transition-property: background-color, transform, background;
   color: #fffffe;
-  padding: 8px 16px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
   cursor: pointer;
 }
 
 .comOpnFL:hover {
-  background-color: rgba(26, 95, 223, 0.808);
+  background-color: rgba(255, 58, 9, 0.808);
 }
 
 .comALRTbx > div {
@@ -346,6 +391,48 @@ input#video_file_ {
   border-top: 15px solid transparent;
   border-right: 15px solid transparent;
   border-bottom: 15px solid transparent;
+}
+
+.shortCutShow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  visibility: visible;
+}
+
+.shortCutShow div {
+  width: 60%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fffffe;
+  border-radius: 5px;
+  overflow: hidden;
+  font-size: x-large;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.shortCutShow div h2 {
+  background: rgba(73, 118, 255, 0.719);
+  padding: 8px 16px;
+  font-weight: 400;
+}
+
+.shortCutShow div ul {
+  list-style: none;
+  padding: 16px 32px;
+}
+
+.shortCutShow div ul li {
+  padding: 4px 8px;
+  margin: 2px;
+}
+
+.shortCutShow div ul li mark {
+  padding: 4px 8px;
+  border-radius: 5px;
 }
 
 @keyframes fadeout {

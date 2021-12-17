@@ -39,6 +39,160 @@ let setTimeOutAfter = 5;
 let mouseOvered = 0;
 
 //functions
+const btnListShow = () => {
+  q_s(".Open_File_5").dataset.active = 1;
+
+  _css(q_s(".under_collapseBTNlist"), {
+    transform: "translate(-2px, 260px) scale(0.6)",
+  });
+
+  Array.from(q_s(".under_collapseBTNlist").children).forEach((c, i) => {
+    _css(c, {
+      transform: "scale(0.6)",
+      "transition-delay": `0ms`,
+    });
+  });
+};
+
+const btnListHide = () => {
+  q_s(".Open_File_5").dataset.active = 0;
+
+  _css(q_s(".under_collapseBTNlist"), {
+    transform: "translate(0, -5px) scale(1)",
+  });
+
+  Array.from(q_s(".under_collapseBTNlist").children).forEach((c, i) => {
+    _css(c, {
+      transform: "scale(1)",
+      "transition-delay": `${(i + 1) * 100}ms`,
+    });
+  });
+};
+
+const shortCut_init = (arr) => {
+  let srtC_ul = q_s(".shortCutShow ul");
+
+  for (let i = 0; i < arr.length; i++) {
+    const prs = arr[i]["press"];
+    const fr = arr[i]["for"];
+
+    let li = create_("li");
+    li.innerHTML = `for <mark>${fr}</mark> press <mark>${prs}</mark>`;
+
+    append_(srtC_ul, li);
+  }
+};
+
+const arClass = (spd) => {
+  let div = create_("div");
+  div.textContent = `${spd}x`;
+
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
+const v_arClass = (spd) => {
+  let div = create_("div");
+  div.textContent = `${(spd * 100).toFixed(0)}%`;
+
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
+const frwrdIconShow = (frwSpeed) => {
+  let div = create_("div");
+  let div1 = create_("div");
+  let div2 = create_("div");
+  let p = create_("p");
+
+  a_class(div, "fd-x");
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+  a_class(div1, "frwrdOneIcon");
+  a_class(div2, "frwrdOneIcon");
+
+  _css(div1, {
+    "margin-left": "20px",
+  });
+
+  p.textContent = `${frwSpeed}`;
+  _css(p, {
+    position: "absolute",
+    top: "-50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    padding: "5px 15px",
+    "text-align": "center",
+    background: "rgba(0,0,0,0.5)",
+    "border-radius": "50%",
+  });
+
+  append_(div, p);
+  append_(div, div1);
+  append_(div, div2);
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
+const bkwrdIconShow = (frwSpeed) => {
+  let div = create_("div");
+  let div1 = create_("div");
+  let div2 = create_("div");
+  let p = create_("p");
+
+  a_class(div, "fd-x");
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+  a_class(div1, "frwrdOneIcon");
+  a_class(div2, "frwrdOneIcon");
+
+  _css(div1, {
+    "margin-left": "20px",
+  });
+
+  p.textContent = `${frwSpeed}`;
+  _css(p, {
+    position: "absolute",
+    top: "150%",
+    left: "50%",
+    transform: "translate(-50%, -50%) rotate(180deg)",
+    padding: "5px 15px",
+    "text-align": "center",
+    background: "rgba(0,0,0,0.5)",
+    "border-radius": "50%",
+  });
+
+  append_(div, p);
+  append_(div, div1);
+  append_(div, div2);
+
+  _css(div, {
+    transform: "translate(-50%, -50%) rotate(180deg)",
+  });
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
 const getTimeConversions = (TIME_) => {
   let covert_duration_ = Math.floor(TIME_) / 60;
 
@@ -481,6 +635,176 @@ const commonFilePass = (i, sortASC) => {
 
 //event handelers
 //objects and arrays
+const casesArr = [
+  {
+    case: " ",
+    press: "Space",
+    for: "play / pause",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let cVD = q_s(`video#${currentId}`);
+
+        if (cVD.paused) {
+          cVD.play();
+
+          playIconShow();
+        } else {
+          cVD.pause();
+
+          pauseIconShow();
+        }
+      }
+    },
+  },
+  {
+    case: "ArrowRight",
+    press: "Arrow Right",
+    for: `${frwSpeed}s forward`,
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let initGoal = q_s(`video#${currentId}`).currentTime;
+        let goalTime = initGoal + frwSpeed;
+
+        q_s(`video#${currentId}`).currentTime = goalTime;
+
+        frwrdIconShow(`${frwSpeed}s`);
+      }
+    },
+  },
+  {
+    case: "ArrowLeft",
+    press: "Arrow Left",
+    for: `${frwSpeed}s backward`,
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let initGoal = q_s(`video#${currentId}`).currentTime;
+        let goalTime = initGoal - frwSpeed;
+
+        q_s(`video#${currentId}`).currentTime = goalTime;
+
+        bkwrdIconShow(`${frwSpeed}s`);
+      }
+    },
+  },
+  {
+    case: "Shift" && ">",
+    press: "Shift & >",
+    for: "speed up",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let vd = q_s(`video#${currentId}`);
+
+        if (vd.playbackRate < 2) {
+          vd.playbackRate += 0.25;
+
+          arClass(vd.playbackRate);
+        } else {
+          arClass(vd.playbackRate);
+        }
+      }
+    },
+  },
+  {
+    case: "Shift" && "<",
+    press: "Shift & <",
+    for: "speed down",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let vd = q_s(`video#${currentId}`);
+
+        if (vd.playbackRate > 0.25) {
+          vd.playbackRate -= 0.25;
+
+          arClass(vd.playbackRate);
+        } else {
+          arClass(vd.playbackRate);
+        }
+      }
+    },
+  },
+  {
+    case: "Shift" && "?",
+    press: "Shift & ?",
+    for: "shortcut panel",
+    f: (e) => {
+      e.preventDefault();
+
+      let srtC_ = q_s(".shortCutShow");
+
+      if (get_css(srtC_, "visibility") === "hidden") {
+        _css(srtC_, {
+          visibility: "visible",
+        });
+      } else {
+        _css(srtC_, {
+          visibility: "hidden",
+        });
+      }
+    },
+  },
+  {
+    case: "ArrowUp",
+    press: "Arrow Up",
+    for: "volume up",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let vd = q_s(`video#${currentId}`);
+
+        if (vd.volume < 1 && vd.volume >= 0) {
+          v_arClass((vd.volume += 0.1));
+        } else {
+          v_arClass(vd.volume);
+        }
+      }
+    },
+  },
+  {
+    case: "ArrowDown",
+    press: "Arrow Down",
+    for: "volume down",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let vd = q_s(`video#${currentId}`);
+
+        if (vd.volume <= 1 && vd.volume > 0.1) {
+          v_arClass((vd.volume -= 0.1));
+        } else {
+          v_arClass(vd.volume);
+        }
+      }
+    },
+  },
+  {
+    case: "f",
+    press: "f",
+    for: "full screen mode",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let vd = q_s(`video#${currentId}`);
+
+        if (vd.requestFullscreen) {
+          vd.requestFullscreen();
+        }
+      }
+    },
+  },
+];
 //EVhandlersARR[3] = header list functions;
 const EVhandlersARR = [
   {
@@ -749,241 +1073,14 @@ const EVhandlersARR = [
     q_s: window,
     ev: "keyup",
     f_: (e) => {
-      const arClass = (spd) => {
-        let div = create_("div");
-        div.textContent = `${spd}x`;
+      for (let i = 0; i < casesArr.length; i++) {
+        const cn = casesArr[i];
 
-        a_class(div, "showPlayBKspeed");
-        a_class(div, "fadeoutAnim");
-
-        append_(q_s("body"), div);
-
-        on_(div, "animationend", () => {
-          div.remove();
-        });
-      };
-
-      const v_arClass = (spd) => {
-        let div = create_("div");
-        div.textContent = `${(spd * 100).toFixed(0)}%`;
-
-        a_class(div, "showPlayBKspeed");
-        a_class(div, "fadeoutAnim");
-
-        append_(q_s("body"), div);
-
-        on_(div, "animationend", () => {
-          div.remove();
-        });
-      };
-
-      const frwrdIconShow = (frwSpeed) => {
-        let div = create_("div");
-        let div1 = create_("div");
-        let div2 = create_("div");
-        let p = create_("p");
-
-        a_class(div, "fd-x");
-        a_class(div, "showPlayBKspeed");
-        a_class(div, "fadeoutAnim");
-        a_class(div1, "frwrdOneIcon");
-        a_class(div2, "frwrdOneIcon");
-
-        _css(div1, {
-          "margin-left": "20px",
-        });
-
-        p.textContent = `${frwSpeed}`;
-        _css(p, {
-          position: "absolute",
-          top: "-50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          padding: "5px 15px",
-          "text-align": "center",
-          background: "rgba(0,0,0,0.5)",
-          "border-radius": "50%",
-        });
-
-        append_(div, p);
-        append_(div, div1);
-        append_(div, div2);
-
-        append_(q_s("body"), div);
-
-        on_(div, "animationend", () => {
-          div.remove();
-        });
-      };
-
-      const bkwrdIconShow = (frwSpeed) => {
-        let div = create_("div");
-        let div1 = create_("div");
-        let div2 = create_("div");
-        let p = create_("p");
-
-        a_class(div, "fd-x");
-        a_class(div, "showPlayBKspeed");
-        a_class(div, "fadeoutAnim");
-        a_class(div1, "frwrdOneIcon");
-        a_class(div2, "frwrdOneIcon");
-
-        _css(div1, {
-          "margin-left": "20px",
-        });
-
-        p.textContent = `${frwSpeed}`;
-        _css(p, {
-          position: "absolute",
-          top: "150%",
-          left: "50%",
-          transform: "translate(-50%, -50%) rotate(180deg)",
-          padding: "5px 15px",
-          "text-align": "center",
-          background: "rgba(0,0,0,0.5)",
-          "border-radius": "50%",
-        });
-
-        append_(div, p);
-        append_(div, div1);
-        append_(div, div2);
-
-        _css(div, {
-          transform: "translate(-50%, -50%) rotate(180deg)",
-        });
-
-        append_(q_s("body"), div);
-
-        on_(div, "animationend", () => {
-          div.remove();
-        });
-      };
-
-      switch (e.key) {
-        case " ":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let cVD = q_s(`video#${currentId}`);
-
-            if (cVD.paused) {
-              cVD.play();
-
-              playIconShow();
-            } else {
-              cVD.pause();
-
-              pauseIconShow();
-            }
-          }
+        if (e.key === cn["case"]) {
+          cn["f"](e);
 
           break;
-
-        case "ArrowRight":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let initGoal = q_s(`video#${currentId}`).currentTime;
-            let goalTime = initGoal + frwSpeed;
-
-            q_s(`video#${currentId}`).currentTime = goalTime;
-
-            frwrdIconShow(`${frwSpeed}s`);
-          }
-
-          break;
-
-        case "ArrowLeft":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let initGoal = q_s(`video#${currentId}`).currentTime;
-            let goalTime = initGoal - frwSpeed;
-
-            q_s(`video#${currentId}`).currentTime = goalTime;
-
-            bkwrdIconShow(`${frwSpeed}s`);
-          }
-
-          break;
-
-        case "Shift" && ">":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let vd = q_s(`video#${currentId}`);
-
-            if (vd.playbackRate < 2) {
-              vd.playbackRate += 0.25;
-
-              arClass(vd.playbackRate);
-            } else {
-              arClass(vd.playbackRate);
-            }
-          }
-
-          break;
-
-        case "Shift" && "<":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let vd = q_s(`video#${currentId}`);
-
-            if (vd.playbackRate > 0.25) {
-              vd.playbackRate -= 0.25;
-
-              arClass(vd.playbackRate);
-            } else {
-              arClass(vd.playbackRate);
-            }
-          }
-
-          break;
-
-        case "ArrowUp":
-          e.preventDefault();
-
-          if (currentId !== undefined) {
-            let vd = q_s(`video#${currentId}`);
-
-            if (vd.volume < 1 && vd.volume >= 0) {
-              v_arClass((vd.volume += 0.1));
-            } else {
-              v_arClass(vd.volume);
-            }
-          }
-
-          break;
-
-        case "ArrowDown":
-          e.preventDefault();
-          if (currentId !== undefined) {
-            let vd = q_s(`video#${currentId}`);
-
-            if (vd.volume <= 1 && vd.volume > 0.1) {
-              v_arClass((vd.volume -= 0.1));
-            } else {
-              v_arClass(vd.volume);
-            }
-          }
-
-          break;
-
-        case "f":
-          e.preventDefault();
-          if (currentId !== undefined) {
-            let vd = q_s(`video#${currentId}`);
-
-            if (vd.requestFullscreen) {
-              vd.requestFullscreen();
-            }
-          }
-
-          break;
-
-        default:
-          break;
+        }
       }
     },
   },
@@ -1008,6 +1105,20 @@ const EVhandlersARR = [
       }
     },
   },
+  {
+    q_s: q_s(".Open_File_5"),
+    ev: "click",
+    f_: () => {
+      let d_actv = q_s(".Open_File_5").dataset.active;
+      let actv = Number(d_actv);
+
+      if (actv === 0) {
+        btnListShow();
+      } else {
+        btnListHide();
+      }
+    },
+  },
 ];
 //initArr
 EVhandlersARR.forEach((arr) => {
@@ -1016,6 +1127,8 @@ EVhandlersARR.forEach((arr) => {
 
 //init
 ckeckID_Time(100);
+shortCut_init(casesArr);
+q_s(".Open_File_5").click();
 
 let hl_ = q_s("html"),
   cn_ = q_s(".videoPlayerContainer"),
