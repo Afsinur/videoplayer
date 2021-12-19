@@ -43,12 +43,12 @@ const btnListShow = () => {
   q_s(".Open_File_5").dataset.active = 1;
 
   _css(q_s(".under_collapseBTNlist"), {
-    transform: "translate(-2px, 260px) scale(0.6)",
+    transform: "translate(-2px, 260px) scale(0)",
   });
 
   Array.from(q_s(".under_collapseBTNlist").children).forEach((c, i) => {
     _css(c, {
-      transform: "scale(0.6)",
+      transform: "scale(0)",
       "transition-delay": `0ms`,
     });
   });
