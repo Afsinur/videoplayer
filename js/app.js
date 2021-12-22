@@ -83,6 +83,25 @@ const shortCut_init = (arr) => {
   }
 };
 
+const muteShow = (mt) => {
+  let div = create_("div");
+
+  if (mt) {
+    div.textContent = `muted on`;
+  } else {
+    div.textContent = `muted off`;
+  }
+
+  a_class(div, "showPlayBKspeed");
+  a_class(div, "fadeoutAnim");
+
+  append_(q_s("body"), div);
+
+  on_(div, "animationend", () => {
+    div.remove();
+  });
+};
+
 const arClass = (spd) => {
   let div = create_("div");
   div.textContent = `${spd}x`;
@@ -500,6 +519,22 @@ const commonFilePass = (i, sortASC) => {
         let div_5 = create_("div");
         a_class(div_5, "showTime_absolute");
 
+        const tmPrint2 = (e) => {
+          let d3_p = getPercent(div_3.clientWidth, e.offsetX);
+
+          let d3_nTp = getNumToPercent(video.duration, d3_p);
+
+          video.currentTime = d3_nTp;
+        };
+
+        on_(div_3, "mousedown", () => {
+          on_(div_1, "mousemove", tmPrint2);
+        });
+
+        on_(div_3, "mouseup", () => {
+          r_listener(div_1, "mousemove", tmPrint2);
+        });
+
         on_(div_3, "click", (e) => {
           let d3_p = getPercent(div_3.clientWidth, e.offsetX);
 
@@ -553,6 +588,7 @@ const commonFilePass = (i, sortASC) => {
         };
 
         let stayVisible = 0;
+
         on_(div_1, "mouseover", (e) => {
           stayVisible = 1;
 
@@ -562,6 +598,7 @@ const commonFilePass = (i, sortASC) => {
             visibility: "visible",
           });
         });
+
         on_(div_1, "mouseleave", () => {
           stayVisible = 0;
 
@@ -804,6 +841,28 @@ const casesArr = [
 
         if (vd.requestFullscreen) {
           vd.requestFullscreen();
+        }
+      }
+    },
+  },
+  {
+    case: "m",
+    press: "m",
+    for: "mute toggle",
+    f: (e) => {
+      e.preventDefault();
+
+      if (currentId !== undefined) {
+        let vd = q_s(`video#${currentId}`);
+
+        if (vd.muted) {
+          vd.muted = false;
+
+          muteShow(vd.muted);
+        } else {
+          vd.muted = true;
+
+          muteShow(vd.muted);
         }
       }
     },
