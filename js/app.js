@@ -1182,6 +1182,15 @@ const EVhandlersARR = [
       }
     },
   },
+  {
+    q_s: q_s(".shortCutShow"),
+    ev: "click",
+    f_: () => {
+      _css(q_s(".shortCutShow"), {
+        visibility: "hidden",
+      });
+    },
+  },
 ];
 //initArr
 EVhandlersARR.forEach((arr) => {
