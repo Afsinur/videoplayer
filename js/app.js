@@ -687,15 +687,7 @@ const casesArr = [
       if (currentId !== undefined) {
         let cVD = q_s(`video#${currentId}`);
 
-        if (cVD.paused) {
-          cVD.play();
-
-          playIconShow();
-        } else {
-          cVD.pause();
-
-          pauseIconShow();
-        }
+        cVD.click();
       }
     },
   },
@@ -1134,7 +1126,7 @@ const EVhandlersARR = [
   },
   {
     q_s: window,
-    ev: "keyup",
+    ev: "keydown",
     f_: (e) => {
       for (let i = 0; i < casesArr.length; i++) {
         const cn = casesArr[i];
